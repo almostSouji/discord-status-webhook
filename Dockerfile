@@ -5,7 +5,7 @@ LABEL maintainer "almostSouji <https://github.com/almostSouji>"
 ENV DISCORD_WEBHOOK_ID=\
 	DISCORD_WEBHOOK_TOKEN=\
 	FORCE_COLOR=1
-WORKDIR /usr/slashy
+WORKDIR /usr/discord-status-webhook
 COPY package.json ./
 RUN apk add --update \
 	&& apk add --no-cache ca-certificates \
