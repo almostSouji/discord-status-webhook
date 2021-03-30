@@ -105,7 +105,7 @@ async function check() {
 		const json = (await fetch(`${API_BASE}/incidents.json`).then((r) => r.json())) as StatusPageResult;
 		const { incidents } = json;
 
-		for (const incident of incidents) {
+		for (const incident of incidents.reverse()) {
 			const data = await incidentData.get(incident.id);
 			if (!data) {
 				logger.info(`new incident: ${incident.id}`);
