@@ -9,11 +9,6 @@ import {
 	EMBED_COLOR_ORANGE,
 	EMBED_COLOR_YELLOW,
 	EMBED_COLOR_BLACK,
-	AVATAR_GREEN,
-	AVATAR_RED,
-	AVATAR_ORANGE,
-	AVATAR_YELLOW,
-	AVATAR_BLACK,
 	API_BASE,
 } from './constants';
 import { logger } from './logger';
@@ -42,31 +37,20 @@ function embedFromIncident(incident: StatusPageIncident): MessageEmbed {
 			? EMBED_COLOR_YELLOW
 			: EMBED_COLOR_BLACK;
 
-	const avatar =
-		incident.status === 'resolved' || incident.status === 'postmortem'
-			? AVATAR_GREEN
-			: incident.impact === 'critical'
-			? AVATAR_RED
-			: incident.impact === 'major'
-			? AVATAR_ORANGE
-			: incident.impact === 'minor'
-			? AVATAR_YELLOW
-			: AVATAR_BLACK;
-
 	const affectedNames = incident.components.map((c) => c.name);
 
 	const embed = new MessageEmbed()
 		.setColor(color)
 		.setTimestamp(new Date(incident.started_at))
-		.setFooter('started at')
-		.setAuthor(incident.name, avatar, incident.shortlink);
+		.setURL(incident.shortlink)
+		.setTitle(incident.name);
 
 	for (const update of incident.incident_updates.reverse()) {
 		const updateDT = DateTime.fromISO(update.created_at);
 		const timeString = updateDT.hasSame(incidentDT, 'day')
 			? updateDT.toUTC().toFormat('HH:mm ZZZZ')
 			: updateDT.toUTC().toFormat('yyyy/LL/dd HH:mm ZZZZ');
-		embed.addField(`${update.status} (${timeString})`, update.body);
+		embed.addField(`${update.status.charAt(0).toUpperCase()}${update.status.slice(1)} (${timeString})`, update.body);
 	}
 
 	const descriptionParts = [`• Impact: ${incident.impact}`];
