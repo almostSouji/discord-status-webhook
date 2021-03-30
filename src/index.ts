@@ -27,6 +27,7 @@ interface DataEntry {
 }
 
 const hook = new WebhookClient(process.env.DISCORD_WEBHOOK_ID!, process.env.DISCORD_WEBHOOK_TOKEN!);
+logger.info(`Starting with ${hook.id}`);
 
 function embedFromIncident(incident: StatusPageIncident): MessageEmbed {
 	const incidentDT = DateTime.fromISO(incident.started_at);
@@ -100,6 +101,7 @@ async function updateIncident(incident: StatusPageIncident, messageID?: string) 
 
 async function check() {
 	try {
+		logger.info('fetching incident reports');
 		const json = (await fetch(`${API_BASE}/incidents.json`).then((r) => r.json())) as StatusPageResult;
 		const { incidents } = json;
 
@@ -122,4 +124,5 @@ async function check() {
 	}
 }
 
+logger.info(`starting interval`);
 setInterval(() => void check(), 60_000 * 5);
