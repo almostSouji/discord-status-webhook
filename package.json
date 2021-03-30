@@ -1,0 +1,117 @@
+{
+	"$schema": "http://json.schemastore.org/package",
+	"name": "resource-webhooks",
+	"version": "0.1.0",
+	"description": "",
+	"contributors": [
+		"Souji <timoqueezle@gmail.com>"
+	],
+	"license": "Apache-2.0",
+	"private": true,
+	"scripts": {
+		"build": "rimraf dist && tsc",
+		"start": "node dist/index.js",
+		"deploy": "node --unhandled-rejections=strict dist/index.js",
+		"lint": "eslint src --ext .ts",
+		"lint:fix": "eslint src --ext .ts --fix",
+		"prettier": "prettier --write **/*.{ts,js,json,yml,yaml}"
+	},
+	"keywords": [
+		"discord",
+		"api",
+		"webhook",
+		"discordapp"
+	],
+	"dependencies": {
+		"@keyv/sqlite": "^2.0.2",
+		"discord.js": "github:discordjs/discord.js#28e961d8571276c36bc7a9743de1477e990ef585",
+		"keyv": "^4.0.3",
+		"luxon": "^1.26.0",
+		"node-fetch": "^2.6.1",
+		"winston": "^3.3.3"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^9.1.2",
+		"@commitlint/config-angular": "^9.1.2",
+		"@types/keyv": "^3.1.1",
+		"@types/luxon": "^1.26.2",
+		"@types/node": "^14.6.4",
+		"@types/node-fetch": "^2.5.8",
+		"@types/winston": "^2.4.4",
+		"@typescript-eslint/eslint-plugin": "^3.10.1",
+		"@typescript-eslint/parser": "^3.10.1",
+		"eslint": "^7.7.0",
+		"eslint-config-marine": "^7.2.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.4",
+		"husky": "^4.2.5",
+		"lint-staged": "^10.2.13",
+		"prettier": "^2.1.1",
+		"rimraf": "^3.0.2",
+		"typescript": "^4.0.2"
+	},
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"eslintConfig": {
+		"extends": "marine/prettier/node",
+		"parserOptions": {
+			"project": "./tsconfig.eslint.json"
+		},
+		"rules": {
+			"@typescript-eslint/naming-convention": 0
+		}
+	},
+	"prettier": {
+		"printWidth": 120,
+		"useTabs": true,
+		"singleQuote": true,
+		"quoteProps": "as-needed",
+		"trailingComma": "all",
+		"endOfLine": "lf"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged",
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"lint-staged": {
+		"*.js": [
+			"prettier --write"
+		],
+		"*.ts": [
+			"eslint --fix",
+			"prettier --write"
+		],
+		"*.{json,yml,yaml}": [
+			"prettier --write"
+		]
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-angular"
+		],
+		"rules": {
+			"type-enum": [
+				2,
+				"always",
+				[
+					"chore",
+					"build",
+					"ci",
+					"docs",
+					"feat",
+					"fix",
+					"perf",
+					"refactor",
+					"revert",
+					"style",
+					"test",
+					"types",
+					"wip"
+				]
+			]
+		}
+	}
+}
