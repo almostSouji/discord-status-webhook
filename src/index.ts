@@ -84,22 +84,22 @@ async function updateIncident(incident: StatusPageIncident, messageID?: string) 
 }
 
 async function check() {
+	logger.log('heartbeat', `❤`);
 	try {
-		logger.info('fetching incident reports');
 		const json = (await fetch(`${API_BASE}/incidents.json`).then((r) => r.json())) as StatusPageResult;
 		const { incidents } = json;
 
 		for (const incident of incidents.reverse()) {
 			const data = await incidentData.get(incident.id);
 			if (!data) {
-				logger.info(`new incident: ${incident.id}`);
+				logger.log('new', `new incident: ${incident.id}`);
 				void updateIncident(incident);
 				continue;
 			}
 
 			const incidentUpdate = DateTime.fromISO(incident.updated_at ?? incident.created_at);
 			if (DateTime.fromISO(data.lastUpdate) < incidentUpdate) {
-				logger.info(`update incident: ${incident.id}`);
+				logger.log('update', `update incident: ${incident.id}`);
 				void updateIncident(incident, data.messageID);
 			}
 		}
@@ -108,5 +108,5 @@ async function check() {
 	}
 }
 
-logger.info(`starting interval`);
+void check();
 setInterval(() => void check(), 60_000 * 5);
