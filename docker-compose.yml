@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   application:
@@ -8,3 +8,5 @@ services:
     restart: always
     env_file:
       - ./.env
+    volumes:
+      - ./data/data.sqlite:/data/data.sqlite
