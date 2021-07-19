@@ -14,4 +14,4 @@ RUN apk add --update \
 	&& apk del .build-deps
 COPY . .
 RUN npm run build
-CMD ["node", "dist/index.js"]
+CMD ["npm", "run", "start"]
