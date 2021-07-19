@@ -25,7 +25,6 @@ const hook = new WebhookClient(process.env.DISCORD_WEBHOOK_ID!, process.env.DISC
 logger.info(`Starting with ${hook.id}`);
 
 function embedFromIncident(incident: StatusPageIncident): MessageEmbed {
-	const incidentDT = DateTime.fromISO(incident.started_at);
 	const color =
 		incident.status === 'resolved' || incident.status === 'postmortem'
 			? EMBED_COLOR_GREEN
@@ -47,9 +46,7 @@ function embedFromIncident(incident: StatusPageIncident): MessageEmbed {
 
 	for (const update of incident.incident_updates.reverse()) {
 		const updateDT = DateTime.fromISO(update.created_at);
-		const timeString = updateDT.hasSame(incidentDT, 'day')
-			? updateDT.toUTC().toFormat('HH:mm ZZZZ')
-			: updateDT.toUTC().toFormat('yyyy/LL/dd HH:mm ZZZZ');
+		const timeString = `<t:${Math.floor(updateDT.toSeconds())}:R>`;
 		embed.addField(`${update.status.charAt(0).toUpperCase()}${update.status.slice(1)} (${timeString})`, update.body);
 	}
 
