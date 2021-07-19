@@ -12,7 +12,7 @@ import {
 	API_BASE,
 } from './constants';
 import { logger } from './logger';
-const incidentData: Keyv<DataEntry> = new Keyv(`sqlite://./data/data.sqlite`);
+const incidentData: Keyv<DataEntry> = new Keyv(`sqlite:///data/data.sqlite`);
 
 interface DataEntry {
 	messageID: string;
