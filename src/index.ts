@@ -65,6 +65,7 @@ async function updateIncident(incident: StatusPageIncident, messageID?: string) 
 	const embed = embedFromIncident(incident);
 	try {
 		const message = await (messageID ? hook.editMessage(messageID, embed) : hook.send(embed));
+		logger.debug(`setting: ${incident.id} to message: ${message.id}`);
 		await incidentData.set(incident.id, {
 			incidentID: incident.id,
 			lastUpdate: DateTime.now().toISO(),
@@ -81,7 +82,7 @@ async function updateIncident(incident: StatusPageIncident, messageID?: string) 
 }
 
 async function check() {
-	logger.log('heartbeat', `❤`);
+	logger.info('heartbeat');
 	try {
 		const json = (await fetch(`${API_BASE}/incidents.json`).then((r) => r.json())) as StatusPageResult;
 		const { incidents } = json;
@@ -89,14 +90,14 @@ async function check() {
 		for (const incident of incidents.reverse()) {
 			const data = await incidentData.get(incident.id);
 			if (!data) {
-				logger.log('new', `new incident: ${incident.id}`);
+				logger.info(`new incident: ${incident.id}`);
 				void updateIncident(incident);
 				continue;
 			}
 
 			const incidentUpdate = DateTime.fromISO(incident.updated_at ?? incident.created_at);
 			if (DateTime.fromISO(data.lastUpdate) < incidentUpdate) {
-				logger.log('update', `update incident: ${incident.id}`);
+				logger.info(`update incident: ${incident.id}`);
 				void updateIncident(incident, data.messageID);
 			}
 		}
