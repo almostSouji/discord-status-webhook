@@ -42,7 +42,8 @@ function embedFromIncident(incident: StatusPageIncident): MessageEmbed {
 		.setColor(color)
 		.setTimestamp(new Date(incident.started_at))
 		.setURL(incident.shortlink)
-		.setTitle(incident.name);
+		.setTitle(incident.name)
+		.setFooter(incident.id);
 
 	for (const update of incident.incident_updates.reverse()) {
 		const updateDT = DateTime.fromISO(update.created_at);
