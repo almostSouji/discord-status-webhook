@@ -22,11 +22,12 @@
 		"discordapp"
 	],
 	"dependencies": {
-		"@keyv/sqlite": "^2.0.2",
+		"@keyv/sqlite": "^3.5.0",
 		"discord.js": "github:discordjs/discord.js#28e961d8571276c36bc7a9743de1477e990ef585",
-		"keyv": "^4.0.3",
+		"keyv": "^4.2.2",
 		"luxon": "^1.26.0",
 		"node-fetch": "^2.6.1",
+		"pify": "^5.0.0",
 		"pino": "^6.12.0"
 	},
 	"devDependencies": {
