@@ -62,6 +62,10 @@ function embedFromIncident(incident: StatusPageIncident): MessageEmbed {
 	return embed;
 }
 
+function isResolvedStatus(status: string) {
+	return ['resolved', 'postmortem'].some((stat) => stat === status);
+}
+
 async function updateIncident(incident: StatusPageIncident, messageID?: string) {
 	const embed = embedFromIncident(incident);
 	try {
@@ -71,7 +75,7 @@ async function updateIncident(incident: StatusPageIncident, messageID?: string) 
 			incidentID: incident.id,
 			lastUpdate: DateTime.now().toISO(),
 			messageID: message.id,
-			resolved: incident.status === 'resolved' || incident.status === 'postmortem',
+			resolved: isResolvedStatus(incident.status),
 		});
 	} catch (error) {
 		if (messageID) {
@@ -91,6 +95,10 @@ async function check() {
 		for (const incident of incidents.reverse()) {
 			const data = await incidentData.get(incident.id);
 			if (!data) {
+				if (isResolvedStatus(incident.status)) {
+					continue;
+				}
+
 				logger.info(`new incident: ${incident.id}`);
 				void updateIncident(incident);
 				continue;
