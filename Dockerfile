@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:26-alpine
 LABEL name "discord-status-webhook"
 LABEL version "0.0.0"
 LABEL maintainer "almostSouji <https://github.com/almostSouji>"

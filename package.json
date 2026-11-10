@@ -42,7 +42,7 @@
 		"typescript": "^5.9.3"
 	},
 	"engines": {
-		"node": ">=22.0.0"
+		"node": ">=26.13.0"
 	},
 	"commitlint": {
 		"extends": [
